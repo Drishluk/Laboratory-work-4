@@ -1,0 +1,20 @@
+name: SQL Linter
+on:
+  # обробка події типу push для гілки LW4
+  push:
+    branches:
+      - main
+
+jobs:
+  SQLLinter:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code in Repository
+        uses: actions/checkout@v3
+
+      - name: Start SQL Linter
+        run: |
+          # Встановлення SQLFluff для перевірки SQL файлів
+          pip install sqlfluff
+          # Виконання перевірки файлу опису схеми даних
+          sqlfluff lint $GITHUB_WORKSPACE/RelationDB_DetailedDataSchema.sql --dialect oracle
