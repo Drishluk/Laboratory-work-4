@@ -1,6 +1,6 @@
 name: SQL Linter
 on:
-  # обробка події типу push для гілки LW4
+  # обробка події типу push для гілки main
   push:
     branches:
       - main
