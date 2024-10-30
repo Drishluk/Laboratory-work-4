@@ -1,17 +1,17 @@
 /* Створення таблиці Consumer */
 CREATE TABLE consumer (
     consumer_id NUMBER PRIMARY KEY, -- Первинний ключ
-    name VARCHAR2(50) NOT NULL, -- Ім'я споживача, не порожнє
-    email VARCHAR2(100) NOT NULL, -- Електронна пошта споживача, валідний email
-    CONSTRAINT email_format CHECK
-    (regexp_like(email, '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'))
+    username VARCHAR2(50) NOT NULL, -- Ім'я споживача, не порожнє
+    email VARCHAR2(100) NOT NULL
+    CHECK (email ~ '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
 );
 
 /* Створення таблиці Zone */
 CREATE TABLE zone (
     zone_id NUMBER PRIMARY KEY, -- Первинний ключ
     consumer_id NUMBER, -- Зовнішній ключ до Consumer
-    name VARCHAR2(100) NOT NULL, -- Назва зони, унікальне значення
+    title VARCHAR2(100) NOT NULL
+    CHECK (username ~ '^[a-zA-Z0-9_]{3,50}$'),
     safety_level VARCHAR2(50) NOT NULL, -- Рівень безпеки зони, не порожнє
     CONSTRAINT unique_zone_name UNIQUE (name),
     CONSTRAINT fk_consumer_id FOREIGN KEY (consumer_id)
