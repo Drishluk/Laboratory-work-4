@@ -1,38 +1,35 @@
-/* Створення таблиці Consumer */
 CREATE TABLE consumer (
-    consumer_id NUMBER PRIMARY KEY, -- Первинний ключ
-    username VARCHAR2(50) NOT NULL, -- Ім'я споживача, не порожнє
-    email VARCHAR2(100) NOT NULL
+    consumer_id SERIAL PRIMARY KEY, -- Первинний ключ з автоінкрементом
+    username VARCHAR(50) NOT NULL, -- Ім'я споживача, не порожнє
+    email VARCHAR(100) NOT NULL,
     CHECK (email ~ '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
 );
 
 /* Створення таблиці Zone */
 CREATE TABLE zone (
-    zone_id NUMBER PRIMARY KEY, -- Первинний ключ
-    consumer_id NUMBER, -- Зовнішній ключ до Consumer
-    title VARCHAR2(100) NOT NULL
+    zone_id SERIAL PRIMARY KEY, -- Первинний ключ з автоінкрементом
+    consumer_id INTEGER REFERENCES
+    consumer (consumer_id), -- Зовнішній ключ до Consumer
+    title VARCHAR(100) NOT NULL, -- Назва зони, не порожнє
+    username VARCHAR(50) NOT NULL,
     CHECK (username ~ '^[a-zA-Z0-9_]{3,50}$'),
-    safety_level VARCHAR2(50) NOT NULL, -- Рівень безпеки зони, не порожнє
-    CONSTRAINT unique_zone_name UNIQUE (name),
-    CONSTRAINT fk_consumer_id FOREIGN KEY (consumer_id)
-    REFERENCES consumer (consumer_id)
+    safety_level VARCHAR(50) NOT NULL, -- Рівень безпеки зони, не порожнє
+    CONSTRAINT unique_zone_title
+    UNIQUE (title) -- Унікальне обмеження на назву зони
 );
 
 /* Створення таблиці Notification */
 CREATE TABLE notification (
-    notification_id NUMBER PRIMARY KEY, -- Первинний ключ
-    consumer_id NUMBER, -- Зовнішній ключ до Consumer
-    message VARCHAR2(255) NOT NULL, -- Текст повідомлення, не порожнє
-    date_sent DATE NOT NULL, -- Дата відправки повідомлення, не порожнє
-    CONSTRAINT fk_notification_consumer FOREIGN KEY (consumer_id)
-    REFERENCES consumer (consumer_id)
+    notification_id SERIAL PRIMARY KEY, -- Первинний ключ з автоінкрементом
+    consumer_id INTEGER
+    REFERENCES consumer (consumer_id), -- Зовнішній ключ до Consumer
+    message VARCHAR(255) NOT NULL, -- Текст повідомлення, не порожнє
+    date_sent DATE NOT NULL -- Дата відправки повідомлення, не порожнє
 );
 
 /* Створення таблиці Potential Danger */
 CREATE TABLE potential_danger (
-    potential_danger_id NUMBER PRIMARY KEY, -- Первинний ключ
-    zone_id NUMBER, -- Зовнішній ключ до Zone
-    description VARCHAR2(255) NOT
-    NULL, -- Опис потенційної небезпеки, не порожнє
-    CONSTRAINT fk_zone_id FOREIGN KEY (zone_id) REFERENCES zone (zone_id)
+    potential_danger_id SERIAL PRIMARY KEY, -- Первинний ключ з автоінкрементом
+    zone_id INTEGER REFERENCES zone (zone_id), -- Зовнішній ключ до Zone
+    description VARCHAR(255) NOT NULL -- Опис потенційної небезпеки, не порожнє
 );
