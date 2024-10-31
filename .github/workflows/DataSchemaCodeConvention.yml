@@ -17,4 +17,4 @@ jobs:
           # Встановлення SQLFluff для перевірки SQL файлів
           pip install sqlfluff
           # Виконання перевірки файлу опису схеми даних
-          sqlfluff lint $GITHUB_WORKSPACE/DataSchemaModified.sql --dialect postgres
+          sqlfluff lint $GITHUB_WORKSPACE/DataSchema.sql --dialect postgres
